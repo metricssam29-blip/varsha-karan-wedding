@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Varsha & Karan — Royal Wedding Invitation 💍</title>
+  
+  <!-- OpenGraph Metadata for WhatsApp, Instagram, Facebook Sharing -->
+  <meta property="og:title" content="Varsha & Karan — Royal Wedding Invitation 💍">
+  <meta property="og:description" content="You are cordially invited to celebrate the wedding ceremony of Varsha & Karan. Tap to open the royal invitation.">
+  <meta property="og:image" content="assets/palace-courtyard.jpg">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#4a5d4e">
+  
+  <!-- Google Fonts: Royal Serif, Romance Calligraphy, Elegant Modern Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@600;700;900&family=Cinzel:wght@500;600;700;800&family=Great+Vibes&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="sage">
+
+  <!-- Background Music Audio Tag (Directly starts at 0:24 'Hansti Rahe Tu') -->
+  <audio id="weddingAudio" src="assets/wedding-music.mp3" preload="auto" loop></audio>
+
+  <!-- Floating Falling Petals Canvas -->
+  <canvas id="petalsCanvas"></canvas>
+
+  <!-- Main App Wrapper -->
+  <div class="app-layout" id="appLayout">
+
+    <!-- Desktop / Responsive Outer Header Toolbar -->
+    <header class="top-nav-bar">
+      <div class="top-brand">
+        <span class="monogram">V & K</span>
+        <span class="wedding-tag">Royal Invitation</span>
+      </div>
+      <div class="top-actions">
+        <!-- Theme Picker Button -->
+        <button class="icon-pill-btn" id="themeModalBtn" title="Change Theme" aria-label="Change Theme">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 2a4.5 4.5 0 0 0 0 9 4.5 4.5 0 0 1 0 9 10 10 0 0 0 0-18Z"></path>
+          </svg>
+          <span class="btn-text">Themes</span>
+        </button>
+
+        <!-- Audio Music Pill Button -->
+        <button class="icon-pill-btn music-btn" id="musicToggleBtn" title="Play / Pause Wedding Music" aria-label="Toggle Audio">
+          <div class="sound-wave" id="soundWave">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+          <svg class="music-icon" id="musicMuteIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+          <span class="btn-text" id="musicBtnLabel">Hansti Rahe Tu</span>
+        </button>
+
+        <!-- View Mode Toggle (Phone / Full width on Desktop) -->
+        <button class="icon-pill-btn mode-btn" id="viewModeBtn" title="Toggle Phone / Wide View">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+            <path d="M12 18h.01"></path>
+          </svg>
+          <span class="btn-text" id="viewModeText">Phone View</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Device Frame Container -->
+    <main class="device-container" id="deviceContainer">
+
+      <!-- ============================================== -->
+      <!-- THE ROYAL DOOR UNVEILING OVERLAY               -->
+      <!-- ============================================== -->
+      <div class="doors-overlay" id="doorsOverlay">
+        
+        <!-- Left Door -->
+        <div class="door door-left" id="doorLeft">
+          <div class="door-ornament-corner top-left"></div>
+          <div class="door-ornament-corner bottom-left"></div>
+          <div class="door-inner-border"></div>
+          <div class="door-foil-branch branch-left"></div>
+        </div>
+
+        <!-- Right Door -->
+        <div class="door door-right" id="doorRight">
+          <div class="door-ornament-corner top-right"></div>
+          <div class="door-ornament-corner bottom-right"></div>
+          <div class="door-inner-border"></div>
+          <div class="door-foil-branch branch-right"></div>
+        </div>
+
+        <!-- Golden Beaded Center Seam Divider -->
+        <div class="door-center-seam" id="doorSeam"></div>
+
+        <!-- Center Royal Wax Seal Badge (TAP TO OPEN) -->
+        <div class="royal-seal-container" id="royalSealContainer">
+          <div class="royal-seal-glow"></div>
+          <button class="royal-seal-badge" id="openInviteBtn" aria-label="Tap to Open Royal Invitation">
+            <div class="seal-scalloped-edge"></div>
+            <div class="seal-inner-ring">
+              <span class="seal-flourish-top">❦</span>
+              <span class="seal-subtitle">ROYAL INVITATION</span>
+              <span class="seal-cta">TAP TO OPEN</span>
+              <span class="seal-flourish-bottom">✦ 💍 ✦</span>
+            </div>
+          </button>
+          <p class="seal-hint">Turn up the volume for the best experience 🎶</p>
+        </div>
+
+        <!-- Fabric Curtain Valance for dramatic unveil -->
+        <div class="door-curtains" id="doorCurtains">
+          <div class="curtain-drape curtain-left"></div>
+          <div class="curtain-drape curtain-right"></div>
+        </div>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- SCROLLABLE WEDDING INVITATION CONTENT          -->
+      <!-- ============================================== -->
+      <div class="invitation-scroll-view" id="invitationView">
+
+        <!-- 1. HERO / ARCH & PALACE HEADER -->
+        <section class="section hero-card" id="heroSection">
+          
+          <!-- Palace Arch & Draped Canopy -->
+          <div class="arch-canopy">
+            <div class="canopy-valance"></div>
+            <div class="canopy-curtain left"></div>
+            <div class="canopy-curtain right"></div>
+          </div>
+
+          <!-- Palace Courtyard Visual with Fountain -->
+          <div class="palace-courtyard-frame">
+            <img src="assets/palace-courtyard.jpg" alt="Royal Palace Courtyard with Fountain" class="palace-image">
+            <div class="fountain-shimmer"></div>
+            <div class="floral-garland-overlay"></div>
+          </div>
+
+          <!-- Main Typography -->
+          <div class="hero-content">
+            <p class="invitation-pretitle">We’re getting married</p>
+            
+            <!-- Bride Details -->
+            <div class="person-block bride-block">
+              <h1 class="person-name">Varsha</h1>
+              <p class="parent-line">The Bride</p>
+            </div>
+
+            <!-- Ampersand Ornament -->
+            <div class="ampersand-divider">
+              <span class="flourish-line"></span>
+              <span class="ampersand">&amp;</span>
+              <span class="flourish-line"></span>
+            </div>
+
+            <!-- Groom Details -->
+            <div class="person-block groom-block">
+              <h1 class="person-name">Karan</h1>
+              <p class="parent-line">The Groom</p>
+            </div>
+
+            <div class="golden-filigree-divider">
+              <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+                <path d="M0,10 Q25,0 50,10 Q75,20 100,10" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                <circle cx="50" cy="10" r="3" fill="currentColor"/>
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. WELCOME BLESSING / FAITH & LOVE -->
+        <section class="section welcome-card" id="welcomeSection">
+          <div class="card-inner">
+            <div class="card-filigree-top">❦ ❧</div>
+            <p class="welcome-text">
+              We cordially invite you to grace the auspicious wedding celebration of 
+              <strong>Varsha</strong> &amp; <strong>Karan</strong>. As they begin their 
+              journey together in love, joy and togetherness, we request the honor of your 
+              presence and blessings 🤍
+            </p>
+            <div class="card-filigree-bottom">
+              <span class="star-accent">✦</span>
+              <span class="star-accent">✦</span>
+              <span class="star-accent">✦</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. INTERACTIVE SCRATCH TO REVEAL (SAVE THE DATE) -->
+        <section class="section scratch-section" id="scratchSection">
+          <div class="section-header">
+            <span class="sub-label">Interactive Surprise</span>
+            <h2 class="section-title script-title">Scratch to Reveal</h2>
+            <p class="scratch-instruction">Scratch the sparkling heart with your finger or mouse! ✨</p>
+          </div>
+
+          <div class="scratch-card-wrapper">
+            <!-- Hidden Revealed Content (Behind the Canvas) -->
+            <div class="scratch-revealed-content" id="scratchRevealed">
+              <div class="revealed-heart-inner">
+                <span class="forever-badge">Varmala &amp; Phere 🤍</span>
+                <div class="revealed-date-box">
+                  <p class="revealed-month">NOVEMBER 25, 2026</p>
+                  <p class="revealed-day">Wednesday • 8:00 PM Onwards</p>
+                </div>
+                <div class="revealed-sparkle">✨ 💍 ✨</div>
+              </div>
+            </div>
+
+            <!-- Foreground Scratch Canvas -->
+            <canvas id="scratchCanvas" width="300" height="300"></canvas>
+            
+            <!-- Confetti trigger animation element -->
+            <div class="scratch-progress-glow" id="scratchProgress"></div>
+          </div>
+
+          <!-- Save the Date Action Button -->
+          <div class="scratch-action-wrap">
+            <button class="gold-action-btn" id="saveTheDateBtn">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+                <path d="M8 14h.01"></path>
+                <path d="M12 14h.01"></path>
+                <path d="M16 14h.01"></path>
+              </svg>
+              <span>SAVE THE DATE</span>
+            </button>
+            <div class="calendar-options" id="calendarOptions">
+              <button class="cal-mini-link" id="googleCalBtn">Add to Google Calendar</button>
+              <span class="cal-divider">•</span>
+              <button class="cal-mini-link" id="downloadIcsBtn">Download iCal (.ics)</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. ROMANTIC PHOTO GALLERY / CAROUSEL -->
+        <section class="section gallery-section" id="gallerySection">
+          <div class="section-header">
+            <span class="sub-label">Moments &amp; Memories</span>
+            <h2 class="section-title script-title">A Love Story</h2>
+          </div>
+
+          <div class="carousel-container" id="photoCarousel">
+            <div class="carousel-track" id="carouselTrack">
+              <!-- Slide 1 -->
+              <div class="carousel-slide active">
+                <div class="slide-image-card">
+                  <img src="assets/wedding-rings.jpg" alt="Eternal Gold Rings and Peonies" loading="lazy">
+                  <div class="slide-caption">Eternal Promise 💍</div>
+                </div>
+              </div>
+              <!-- Slide 2 -->
+              <div class="carousel-slide">
+                <div class="slide-image-card">
+                  <img src="assets/palace-courtyard.jpg" alt="Royal Palace Courtyard" loading="lazy">
+                  <div class="slide-caption">Palace Courtyard &amp; Fountain 🏛️</div>
+                </div>
+              </div>
+              <!-- Slide 3 -->
+              <div class="carousel-slide">
+                <div class="slide-image-card">
+                  <img src="assets/wedding-decor.jpg" alt="Grand Ballroom Decor" loading="lazy">
+                  <div class="slide-caption">Grand Reception Ballroom ✨</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Arrows -->
+            <button class="carousel-nav-btn prev-btn" id="prevSlideBtn" aria-label="Previous Slide">‹</button>
+            <button class="carousel-nav-btn next-btn" id="nextSlideBtn" aria-label="Next Slide">›</button>
+
+            <!-- Dots -->
+            <div class="carousel-indicators" id="carouselDots">
+              <span class="dot active" data-index="0"></span>
+              <span class="dot" data-index="1"></span>
+              <span class="dot" data-index="2"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. COUNTDOWN TIMER -->
+        <section class="section countdown-section" id="countdownSection">
+          <div class="section-header">
+            <span class="sub-label">The Auspicious Moment</span>
+            <h2 class="section-title script-title">Counting Down to Forever</h2>
+          </div>
+
+          <div class="countdown-grid">
+            <div class="countdown-card">
+              <span class="countdown-val" id="daysVal">00</span>
+              <span class="countdown-label">DAYS</span>
+            </div>
+            <div class="countdown-card">
+              <span class="countdown-val" id="hoursVal">00</span>
+              <span class="countdown-label">HOURS</span>
+            </div>
+            <div class="countdown-card">
+              <span class="countdown-val" id="minsVal">00</span>
+              <span class="countdown-label">MINUTES</span>
+            </div>
+            <div class="countdown-card">
+              <span class="countdown-val" id="secsVal">00</span>
+              <span class="countdown-label">SECONDS</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. PROGRAM TIMELINE -->
+        <section class="section timeline-section" id="timelineSection">
+          <div class="section-header">
+            <div class="icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h2 class="section-title script-title">Program Timeline</h2>
+          </div>
+
+          <div class="timeline-list">
+            <!-- Event 1: Ubtan Utsav -->
+            <div class="timeline-item">
+              <div class="timeline-node">
+                <span class="node-dot"></span>
+                <span class="node-line"></span>
+              </div>
+              <div class="timeline-box">
+                <h3 class="event-name">Ubtan Utsav</h3>
+                <p class="event-time">Nov 24, 2026 | 10:00 AM Onwards</p>
+                <p class="event-note">Theme: <strong>Yellow Pehnawa</strong> 💛</p>
+              </div>
+            </div>
+
+            <!-- Event 2: Dance, Dhol & Dhamaka -->
+            <div class="timeline-item">
+              <div class="timeline-node">
+                <span class="node-dot"></span>
+                <span class="node-line"></span>
+              </div>
+              <div class="timeline-box">
+                <h3 class="event-name">Dance, Dhol &amp; Dhamaka</h3>
+                <p class="event-time">Nov 24, 2026 | 07:00 PM Onwards</p>
+                <p class="event-note">Theme: <strong>Chamak Dhamak</strong> ✨</p>
+              </div>
+            </div>
+
+            <!-- Event 3: Varmala & Phere -->
+            <div class="timeline-item">
+              <div class="timeline-node">
+                <span class="node-dot"></span>
+              </div>
+              <div class="timeline-box highlight-box">
+                <h3 class="event-name">Varmala &amp; Phere</h3>
+                <p class="event-time">Nov 25, 2026 | 08:00 PM Onwards</p>
+                <p class="event-note">The Holy Union &amp; Royal Celebrations 💍</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. VENUE & LIVE MAP -->
+        <section class="section venue-section" id="venueSection">
+          <div class="section-header">
+            <div class="icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <h2 class="section-title serif-title">Wedding Venue</h2>
+            <h3 class="venue-title">Varmala &amp; Phere</h3>
+            <p class="venue-location">Ovala, Ghodbunder Road, Gowniwada, Owale, Thane West - 400607</p>
+          </div>
+
+          <!-- Styled Google Maps Embed Frame for Thane West Owale -->
+          <div class="map-container">
+            <iframe 
+              title="Venue Location Map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15065.751278148332!2d72.962000!3d19.267000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7bb91845bbabf%3A0x6334645229cbbbe7!2sOwale%2C%20Thane%20West%2C%20Thane%2C%20Maharashtra%20400607!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+              width="100%" 
+              height="240" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            <div class="map-overlay-badge">Ovala, Ghodbunder Road, Thane West</div>
+          </div>
+
+          <!-- Venue Action Buttons -->
+          <div class="venue-actions">
+            <a href="https://www.google.com/maps/search/?api=1&query=Ovale,+Ghodbunder+Road,+Gowniwada,+Thane+West+400607" target="_blank" rel="noopener noreferrer" class="gold-action-btn">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+              </svg>
+              <span>View on Google Maps</span>
+            </a>
+            <button class="gold-outline-btn" id="copyAddressBtn">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+              </svg>
+              <span>Copy Address</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 8. DRESS CODE & PALETTE SWATCHES -->
+        <section class="section dresscode-section" id="dresscodeSection">
+          <div class="section-header">
+            <div class="icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
+              </svg>
+            </div>
+            <h2 class="section-title script-title">Themes &amp; Dress Code</h2>
+          </div>
+
+          <div class="dresscode-cards">
+            <!-- Ubtan Utsav -->
+            <div class="dress-box">
+              <span class="dress-badge">Ubtan Utsav</span>
+              <p class="dress-desc"><strong>Yellow Pehnawa</strong> — Vibrant haldi yellows &amp; festive traditional wear</p>
+              <div class="swatch-group">
+                <div class="swatch" style="background:#ffdd00;" title="Bright Haldi Yellow"></div>
+                <div class="swatch" style="background:#ffc300;" title="Mustard Gold"></div>
+                <div class="swatch" style="background:#ffaa00;" title="Marigold Orange"></div>
+                <div class="swatch" style="background:#fff3b0;" title="Soft Buttercream"></div>
+              </div>
+            </div>
+
+            <!-- Dance, Dhol & Dhamaka -->
+            <div class="dress-box">
+              <span class="dress-badge">Dance, Dhol &amp; Dhamaka</span>
+              <p class="dress-desc"><strong>Chamak Dhamak</strong> — Shimmer, sequins, glitter &amp; glam outfits</p>
+              <div class="swatch-group">
+                <div class="swatch" style="background:#d4af37;" title="Sparkling Gold"></div>
+                <div class="swatch" style="background:#c0c0c0;" title="Shimmer Silver"></div>
+                <div class="swatch" style="background:#1b263b;" title="Midnight Blue"></div>
+                <div class="swatch" style="background:#5a189a;" title="Glitz Purple"></div>
+              </div>
+            </div>
+
+            <!-- Wedding Ceremony -->
+            <div class="dress-box">
+              <span class="dress-badge">Varmala &amp; Phere</span>
+              <p class="dress-desc"><strong>Royal Traditional</strong> — Grand Indian wedding festive attire</p>
+              <div class="swatch-group">
+                <div class="swatch" style="background:#9b2226;" title="Royal Maroon"></div>
+                <div class="swatch" style="background:#e09f3e;" title="Antique Gold"></div>
+                <div class="swatch" style="background:#f4ece1;" title="Ivory Cream"></div>
+                <div class="swatch" style="background:#2d4030;" title="Deep Emerald"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. PRE-WEDDING EVENTS -->
+        <section class="section prewedding-section" id="preweddingSection">
+          <div class="section-header">
+            <span class="sub-label">Celebration Functions</span>
+            <h2 class="section-title script-title">Wedding Festivities</h2>
+          </div>
+
+          <div class="prewedding-grid">
+            <!-- Ubtan Utsav -->
+            <div class="event-card">
+              <div class="event-tag-badge">Haldi Ceremony</div>
+              <h3 class="event-title">Ubtan Utsav</h3>
+              <p class="event-datetime">Nov 24, 2026 • 10:00 AM Onwards</p>
+              <p class="event-place">Theme: <strong>Yellow Pehnawa</strong></p>
+              <div class="event-motif">✨ 🌼 💛</div>
+            </div>
+
+            <!-- Dance, Dhol & Dhamaka -->
+            <div class="event-card">
+              <div class="event-tag-badge">Sangeet Night</div>
+              <h3 class="event-title">Dance, Dhol &amp; Dhamaka</h3>
+              <p class="event-datetime">Nov 24, 2026 • 7:00 PM Onwards</p>
+              <p class="event-place">Theme: <strong>Chamak Dhamak</strong></p>
+              <div class="event-motif">💃 🥁 🕺</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. CONTACT / RSVP CALLS -->
+        <section class="section contact-section" id="contactSection">
+          <div class="contact-card">
+            <div class="section-header">
+              <div class="icon-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+              </div>
+              <h2 class="section-title script-title">For Inquiries &amp; RSVP</h2>
+              <p class="contact-subtitle">Please reach out to us directly via Call or WhatsApp:</p>
+            </div>
+
+            <div class="contact-numbers-list">
+              <!-- Number 1 -->
+              <div class="contact-row">
+                <span class="phone-display">+91 97692 66286</span>
+                <div class="contact-btn-group">
+                  <a href="tel:9769266286" class="contact-mini-btn call-btn" title="Call">📞 Call</a>
+                  <a href="https://wa.me/919769266286?text=Hi!%20Congratulations%20Varsha%20%26%20Karan%20%F0%9F%92%8D" target="_blank" rel="noopener" class="contact-mini-btn wa-btn" title="WhatsApp">💬 WhatsApp</a>
+                </div>
+              </div>
+
+              <!-- Number 2 -->
+              <div class="contact-row">
+                <span class="phone-display">+91 82912 55240</span>
+                <div class="contact-btn-group">
+                  <a href="tel:8291255240" class="contact-mini-btn call-btn" title="Call">📞 Call</a>
+                  <a href="https://wa.me/918291255240?text=Hi!%20Congratulations%20Varsha%20%26%20Karan%20%F0%9F%92%8D" target="_blank" rel="noopener" class="contact-mini-btn wa-btn" title="WhatsApp">💬 WhatsApp</a>
+                </div>
+              </div>
+
+              <!-- Number 3 -->
+              <div class="contact-row">
+                <span class="phone-display">+91 97027 01356</span>
+                <div class="contact-btn-group">
+                  <a href="tel:9702701356" class="contact-mini-btn call-btn" title="Call">📞 Call</a>
+                  <a href="https://wa.me/919702701356?text=Hi!%20Congratulations%20Varsha%20%26%20Karan%20%F0%9F%92%8D" target="_blank" rel="noopener" class="contact-mini-btn wa-btn" title="WhatsApp">💬 WhatsApp</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 11. GIFTS & BLESSINGS -->
+        <section class="section gifts-section" id="giftsSection">
+          <div class="gifts-card">
+            <div class="icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                <rect width="20" height="5" x="2" y="7"></rect>
+                <line x1="12" y1="22" x2="12" y2="7"></line>
+                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+              </svg>
+            </div>
+            <h2 class="section-title script-title">Gifts</h2>
+            <p class="gifts-text">
+              Your love, blessings and presence are the greatest gift we could ever ask for 🤍
+            </p>
+          </div>
+        </section>
+
+        <!-- 12. INTERACTIVE RSVP FORM -->
+        <section class="section rsvp-section" id="rsvpSection">
+          <div class="rsvp-card">
+            <div class="section-header">
+              <div class="icon-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+              </div>
+              <h2 class="rsvp-monogram">RSVP</h2>
+              <p class="rsvp-subtitle">Please respond by November 15, 2026</p>
+            </div>
+
+            <form class="rsvp-form" id="rsvpForm">
+              <!-- Name -->
+              <div class="form-group">
+                <label for="guestName">Your Name <span class="req">*</span></label>
+                <input type="text" id="guestName" placeholder="Your full name" required>
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label for="guestEmail">Email Address <span class="req">*</span></label>
+                <input type="email" id="guestEmail" placeholder="name@example.com" required>
+              </div>
+
+              <!-- Attendance -->
+              <div class="form-group">
+                <label for="attendanceSelect">Will you be attending? <span class="req">*</span></label>
+                <select id="attendanceSelect" required>
+                  <option value="" disabled selected>Select Attendance</option>
+                  <option value="Joyfully Accept">Joyfully Accept</option>
+                  <option value="Regretfully Decline">Regretfully Decline</option>
+                </select>
+              </div>
+
+              <!-- Number of Guests -->
+              <div class="form-group">
+                <label for="guestCount">Number of Guests</label>
+                <select id="guestCount">
+                  <option value="1">1 Guest</option>
+                  <option value="2" selected>2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4+">4+ Guests (Family)</option>
+                </select>
+              </div>
+
+              <!-- Message -->
+              <div class="form-group">
+                <label for="guestMessage">Warm Wishes &amp; Notes</label>
+                <textarea id="guestMessage" rows="3" placeholder="Leave a sweet blessing for the couple..."></textarea>
+              </div>
+
+              <!-- Submit -->
+              <button type="submit" class="gold-submit-btn" id="submitRsvpBtn">
+                <span>Confirm RSVP</span>
+                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </form>
+
+            <!-- Link to view guestbook / responses -->
+            <div class="guestbook-toggle-wrap">
+              <button class="text-link-btn" id="viewGuestlistBtn">
+                <span>📋 View RSVP Guestlist (<span id="guestlistCount">0</span>)</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="invitation-footer">
+          <div class="footer-monogram">Varsha &amp; Karan</div>
+          <p class="footer-blessing">November 25, 2026 • Thane West, Mumbai</p>
+          <p class="footer-credits">Created with endless love 🤍</p>
+        </footer>
+
+      </div> <!-- /invitation-scroll-view -->
+
+      <!-- ============================================== -->
+      <!-- FLOATING BOTTOM QUICK ACTION DOCK              -->
+      <!-- ============================================== -->
+      <nav class="floating-dock" id="floatingDock">
+        <button class="dock-btn" id="dockMusicBtn" title="Music Player">
+          <span class="dock-icon">🎶</span>
+          <span class="dock-label">Music</span>
+        </button>
+        <button class="dock-btn" id="dockTimelineBtn" title="Timeline">
+          <span class="dock-icon">⏳</span>
+          <span class="dock-label">Timeline</span>
+        </button>
+        <button class="dock-btn" id="dockMapBtn" title="Venue Map">
+          <span class="dock-icon">📍</span>
+          <span class="dock-label">Venue</span>
+        </button>
+        <button class="dock-btn" id="dockScratchBtn" title="Scratch Card">
+          <span class="dock-icon">✨</span>
+          <span class="dock-label">Reveal</span>
+        </button>
+        <button class="dock-btn dock-rsvp-btn" id="dockRsvpBtn" title="RSVP">
+          <span class="dock-icon">💌</span>
+          <span class="dock-label">RSVP</span>
+        </button>
+      </nav>
+
+    </main> <!-- /device-container -->
+
+  </div> <!-- /app-layout -->
+
+  <!-- ============================================== -->
+  <!-- THEME SELECTOR MODAL / BOTTOM DRAWER           -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop" id="themeModal">
+    <div class="theme-picker-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Select Invitation Theme</h3>
+        <button class="close-modal-btn" id="closeThemeModalBtn">&times;</button>
+      </div>
+      <p class="theme-subtitle">Customize the colors to match your personal wedding palette:</p>
+
+      <div class="theme-list">
+        <!-- 1. Sage & Royal Gold -->
+        <div class="theme-option active" data-theme-id="sage">
+          <div class="theme-swatch-combo">
+            <span style="background: #4a5d4e;"></span>
+            <span style="background: #c5a059;"></span>
+            <span style="background: #fbf9f4;"></span>
+          </div>
+          <div class="theme-info">
+            <span class="theme-title">🌿 Sage &amp; Royal Gold</span>
+            <span class="theme-desc">Original luxury reel palette (Forest Sage &amp; Gold)</span>
+          </div>
+          <span class="check-icon">✓</span>
+        </div>
+
+        <!-- 2. Imperial Ruby & Champagne -->
+        <div class="theme-option" data-theme-id="ruby">
+          <div class="theme-swatch-combo">
+            <span style="background: #6b1d2f;"></span>
+            <span style="background: #d4af37;"></span>
+            <span style="background: #fdf8f7;"></span>
+          </div>
+          <div class="theme-info">
+            <span class="theme-title">🍷 Imperial Ruby &amp; Gold</span>
+            <span class="theme-desc">Velvet royal maroon with warm antique champagne</span>
+          </div>
+          <span class="check-icon">✓</span>
+        </div>
+
+        <!-- 3. Blush Rose & Pearl Gold -->
+        <div class="theme-option" data-theme-id="rose">
+          <div class="theme-swatch-combo">
+            <span style="background: #8f5a65;"></span>
+            <span style="background: #cda274;"></span>
+            <span style="background: #faf5f5;"></span>
+          </div>
+          <div class="theme-info">
+            <span class="theme-title">🌸 Blush Rose &amp; Pearl</span>
+            <span class="theme-desc">Romantic peony pink &amp; soft brushed rose gold</span>
+          </div>
+          <span class="check-icon">✓</span>
+        </div>
+
+        <!-- 4. Midnight Royal & Starlight -->
+        <div class="theme-option" data-theme-id="navy">
+          <div class="theme-swatch-combo">
+            <span style="background: #1a2a44;"></span>
+            <span style="background: #d4af37;"></span>
+            <span style="background: #f6f8fb;"></span>
+          </div>
+          <div class="theme-info">
+            <span class="theme-title">🌌 Midnight Royal &amp; Starlight</span>
+            <span class="theme-desc">Opulent deep sapphire with bright royal gold</span>
+          </div>
+          <span class="check-icon">✓</span>
+        </div>
+
+        <!-- 5. Palace Ivory & Antique Gold -->
+        <div class="theme-option" data-theme-id="ivory">
+          <div class="theme-swatch-combo">
+            <span style="background: #4a3e35;"></span>
+            <span style="background: #b38b47;"></span>
+            <span style="background: #fbf8f2;"></span>
+          </div>
+          <div class="theme-info">
+            <span class="theme-title">⚜️ Palace Ivory &amp; Antique Gold</span>
+            <span class="theme-desc">Aristocratic cream, warm taupe &amp; palace gold</span>
+          </div>
+          <span class="check-icon">✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- RSVP CELEBRATION CONFETTI MODAL                -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop" id="rsvpSuccessModal">
+    <div class="success-card">
+      <div class="success-icon-wrap">💍</div>
+      <h3 class="success-title">Thank You!</h3>
+      <p class="success-name" id="successGuestGreeting">Dear Guest,</p>
+      <p class="success-msg">
+        Your response has been recorded with joy! We cannot wait to celebrate this auspicious milestone with you.
+      </p>
+      <div class="success-date-badge">
+        <span>November 25, 2026 • Ovala, Ghodbunder Road, Thane West</span>
+      </div>
+      <button class="gold-action-btn" id="closeSuccessModalBtn">Done</button>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- HOST GUESTLIST / RSVP LOG MODAL               -->
+  <!-- ============================================== -->
+  <div class="modal-backdrop" id="guestlistModal">
+    <div class="guestlist-card">
+      <div class="modal-header">
+        <h3 class="modal-title">RSVP Submissions</h3>
+        <button class="close-modal-btn" id="closeGuestlistModalBtn">&times;</button>
+      </div>
+      <div class="guestlist-summary">
+        <span class="summary-pill accept" id="acceptCount">0 Attending</span>
+        <span class="summary-pill decline" id="declineCount">0 Declined</span>
+      </div>
+      <div class="guestlist-table-wrap">
+        <table class="guestlist-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Guests</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="guestlistBody">
+            <!-- Dynamic rows inserted here -->
+          </tbody>
+        </table>
+      </div>
+      <div class="guestlist-actions">
+        <button class="gold-outline-btn" id="exportCsvBtn">Export CSV</button>
+        <button class="text-link-btn" id="clearGuestlistBtn" style="color:#d9534f;">Clear List</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Pill -->
+  <div class="toast-notification" id="toastNotification">
+    <span class="toast-icon">✓</span>
+    <span class="toast-msg" id="toastMessage">Copied to clipboard!</span>
+  </div>
+
+  <!-- Main JavaScript Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
