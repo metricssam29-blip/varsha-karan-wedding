@@ -93,6 +93,29 @@ document.addEventListener('DOMContentLoaded', () => {
   if (musicToggleBtn) musicToggleBtn.addEventListener('click', toggleMusic);
   if (dockMusicBtn) dockMusicBtn.addEventListener('click', toggleMusic);
 
+  // Auto-pause audio when switching browser tabs, minimizing, or backgrounding
+  let wasPlayingBeforeHidden = false;
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (isAudioPlaying) {
+        pauseMusic();
+        wasPlayingBeforeHidden = true;
+      }
+    } else {
+      if (wasPlayingBeforeHidden) {
+        playMusic();
+        wasPlayingBeforeHidden = false;
+      }
+    }
+  });
+
+  window.addEventListener('pagehide', () => {
+    if (isAudioPlaying) {
+      pauseMusic();
+    }
+  });
+
   // ==========================================================================
   // 3. THEME SWITCHER ENGINE
   // ==========================================================================
@@ -305,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function openGoogleCalendar() {
     const title = encodeURIComponent("Varsha & Karan's Wedding (Varmala & Phere) 💍");
     const details = encodeURIComponent("You are cordially invited to celebrate the wedding festivities of Varsha & Karan!\n\n• Nov 24, 10:00 AM: Ubtan Utsav (Yellow Pehnawa)\n• Nov 24, 07:00 PM: Dance, Dhol & Dhamaka (Chamak Dhamak)\n• Nov 25, 08:00 PM: Varmala & Phere (Wedding Ceremony)");
-    const location = encodeURIComponent("Samarambh Lawn & Banquets, Ovala, Ghodbunder Road, Gowniwada, Owale, Thane West - 400607");
+    const location = encodeURIComponent("Samarambh Lawn & Banquets, Lawn No. 2, Ovala, Ghodbunder Road, Gowniwada, Owale, Thane West - 400607");
     // Date: Nov 25, 2026, 8:00 PM IST (14:30 UTC)
     const dates = "20261125T143000Z/20261125T210000Z";
     const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
@@ -326,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
       'DTEND:20261125T210000Z',
       'SUMMARY:Varsha & Karan\'s Wedding Ceremony (Varmala & Phere) 💍',
       'DESCRIPTION:Ubtan Utsav: Nov 24 (10 AM)\\nDance, Dhol & Dhamaka: Nov 24 (7 PM)\\nVarmala & Phere: Nov 25 (8 PM onwards)',
-      'LOCATION:Samarambh Lawn & Banquets\\, Ovala\\, Ghodbunder Road\\, Gowniwada\\, Owale\\, Thane West - 400607',
+      'LOCATION:Samarambh Lawn & Banquets\\, Lawn No. 2\\, Ovala\\, Ghodbunder Road\\, Gowniwada\\, Owale\\, Thane West - 400607',
       'STATUS:CONFIRMED',
       'END:VEVENT',
       'END:VCALENDAR'
@@ -453,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (copyAddressBtn) {
     copyAddressBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText('Samarambh Lawn & Banquets, Ovala, Ghodbunder Road, Gowniwada, Owale, Thane West - 400607').then(() => {
+      navigator.clipboard.writeText('Samarambh Lawn & Banquets, Lawn No. 2, Ovala, Ghodbunder Road, Gowniwada, Owale, Thane West - 400607').then(() => {
         showToast('Venue address copied to clipboard! 📍');
       });
     });
