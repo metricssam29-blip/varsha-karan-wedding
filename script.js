@@ -663,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (dockTimelineBtn) dockTimelineBtn.addEventListener('click', () => smoothScrollTo('timelineSection'));
+  if (dockTimelineBtn) dockTimelineBtn.addEventListener('click', () => smoothScrollTo('preweddingSection'));
   if (dockMapBtn) dockMapBtn.addEventListener('click', () => smoothScrollTo('venueSection'));
   if (dockScratchBtn) dockScratchBtn.addEventListener('click', () => smoothScrollTo('scratchSection'));
   if (dockRsvpBtn) dockRsvpBtn.addEventListener('click', () => smoothScrollTo('rsvpSection'));
