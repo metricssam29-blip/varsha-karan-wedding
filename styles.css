@@ -692,7 +692,7 @@ html, body {
   position: relative;
   width: 100%;
   height: 38px;
-  margin-bottom: 6px;
+  margin-bottom: -15px;
   z-index: 3;
 }
 
@@ -705,42 +705,37 @@ html, body {
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
 }
 
-.royal-crest-header {
-  margin: 12px auto 18px;
-  text-align: center;
+/* Palace Courtyard Visual Frame */
+.palace-courtyard-frame {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto 18px;
+  border-radius: 190px 190px 18px 18px; /* Royal architectural arch top */
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+  border: 4px solid #fff;
+  outline: 1.5px solid var(--accent-gold);
 }
 
-.crest-monogram-circle {
-  width: 84px;
-  height: 84px;
-  margin: 0 auto 10px;
-  border-radius: 50%;
-  border: 2px solid var(--accent-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0.03) 70%, transparent 100%);
-  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.25), inset 0 0 12px rgba(212, 175, 55, 0.15);
+.palace-image {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.02);
+  transition: transform 6s ease;
 }
 
-.crest-letters {
-  font-family: var(--font-royal);
-  font-size: 1.55rem;
-  letter-spacing: 2.5px;
-  background: var(--gold-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 700;
+.palace-courtyard-frame:hover .palace-image {
+  transform: scale(1.08);
 }
 
-.crest-wedding-tag {
-  font-family: var(--font-cinzel);
-  font-size: 0.72rem;
-  letter-spacing: 3px;
-  color: var(--accent-gold);
-  font-weight: 700;
-  text-transform: uppercase;
-  margin: 0;
+.fountain-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 65%, rgba(0, 0, 0, 0.35) 100%);
+  pointer-events: none;
 }
 
 /* Hero Content Typography */

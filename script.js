@@ -347,7 +347,69 @@ document.addEventListener('DOMContentLoaded', () => {
   if (downloadIcsBtn) downloadIcsBtn.addEventListener('click', downloadIcsCalendar);
 
   // ==========================================================================
-  // 7. COUNTDOWN TIMER ENGINE
+  // 7. PHOTO GALLERY CAROUSEL
+  // ==========================================================================
+  const carouselTrack = document.getElementById('carouselTrack');
+  const slides = document.querySelectorAll('.carousel-slide');
+  const prevBtn = document.getElementById('prevSlideBtn');
+  const nextBtn = document.getElementById('nextSlideBtn');
+  const dots = document.querySelectorAll('.carousel-indicators .dot');
+  let currentSlide = 0;
+  let carouselInterval;
+
+  function goToSlide(index) {
+    if (!carouselTrack || slides.length === 0) return;
+    currentSlide = (index + slides.length) % slides.length;
+    carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === currentSlide);
+    });
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', () => { goToSlide(currentSlide - 1); resetCarouselTimer(); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { goToSlide(currentSlide + 1); resetCarouselTimer(); });
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = parseInt(dot.dataset.index, 10);
+      goToSlide(idx);
+      resetCarouselTimer();
+    });
+  });
+
+  function startCarouselTimer() {
+    carouselInterval = setInterval(() => {
+      goToSlide(currentSlide + 1);
+    }, 4500);
+  }
+
+  function resetCarouselTimer() {
+    clearInterval(carouselInterval);
+    startCarouselTimer();
+  }
+
+  startCarouselTimer();
+
+  // Touch Swipe for Carousel
+  let startX = 0;
+  if (carouselTrack) {
+    carouselTrack.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    carouselTrack.addEventListener('touchend', (e) => {
+      const diffX = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diffX) > 40) {
+        if (diffX < 0) goToSlide(currentSlide + 1);
+        else goToSlide(currentSlide - 1);
+        resetCarouselTimer();
+      }
+    }, { passive: true });
+  }
+
+  // ==========================================================================
+  // 8. COUNTDOWN TIMER ENGINE
   // ==========================================================================
   const daysEl = document.getElementById('daysVal');
   const hoursEl = document.getElementById('hoursVal');

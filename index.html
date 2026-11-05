@@ -139,12 +139,11 @@
             <div class="canopy-curtain right"></div>
           </div>
 
-          <!-- Royal Monogram Crest -->
-          <div class="royal-crest-header">
-            <div class="crest-monogram-circle">
-              <span class="crest-letters">V &amp; K</span>
-            </div>
-            <p class="crest-wedding-tag">ROYAL WEDDING INVITATION</p>
+          <!-- Palace Visual Frame -->
+          <div class="palace-courtyard-frame">
+            <img src="assets/indian-palace.jpg" alt="Royal Heritage Palace Venue" class="palace-image">
+            <div class="fountain-shimmer"></div>
+            <div class="floral-garland-overlay"></div>
           </div>
 
           <!-- Main Typography -->
@@ -247,7 +246,52 @@
           </div>
         </section>
 
-        <!-- 4. COUNTDOWN TIMER -->
+        <!-- 4. CELEBRATION HIGHLIGHTS PHOTO GALLERY -->
+        <section class="section gallery-section" id="gallerySection">
+          <div class="section-header">
+            <span class="sub-label">Celebration Moments</span>
+            <h2 class="section-title script-title">Wedding Glimpses</h2>
+          </div>
+
+          <div class="carousel-container" id="photoCarousel">
+            <div class="carousel-track" id="carouselTrack">
+              <!-- Slide 1: Indian Royal Heritage Palace -->
+              <div class="carousel-slide active">
+                <div class="slide-image-card">
+                  <img src="assets/indian-palace.jpg" alt="Royal Heritage Palace Venue" loading="lazy">
+                  <div class="slide-caption">Royal Heritage Venue 🏛️</div>
+                </div>
+              </div>
+              <!-- Slide 2: Grand Wedding Mandap -->
+              <div class="carousel-slide">
+                <div class="slide-image-card">
+                  <img src="assets/indian-mandap.jpg" alt="Grand Wedding Mandap" loading="lazy">
+                  <div class="slide-caption">Grand Wedding Mandap ✨</div>
+                </div>
+              </div>
+              <!-- Slide 3: Sacred Rings -->
+              <div class="carousel-slide">
+                <div class="slide-image-card">
+                  <img src="assets/wedding-rings.jpg" alt="Sacred Rings and Rose Petals" loading="lazy">
+                  <div class="slide-caption">Sacred Rings &amp; Vows 💍</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Arrows -->
+            <button class="carousel-nav-btn prev-btn" id="prevSlideBtn" aria-label="Previous Slide">‹</button>
+            <button class="carousel-nav-btn next-btn" id="nextSlideBtn" aria-label="Next Slide">›</button>
+
+            <!-- Dots -->
+            <div class="carousel-indicators" id="carouselDots">
+              <span class="dot active" data-index="0"></span>
+              <span class="dot" data-index="1"></span>
+              <span class="dot" data-index="2"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. COUNTDOWN TIMER -->
         <section class="section countdown-section" id="countdownSection">
           <div class="section-header">
             <span class="sub-label">The Auspicious Moment</span>
