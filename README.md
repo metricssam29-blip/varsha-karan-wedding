@@ -19,7 +19,7 @@ Ek ultra-luxurious, interactive aur modern royal wedding web page jo exactly aap
 3. **Varmala & Phere (Wedding Ceremony)**:
    - **Date**: 25th November, 2026
    - **Time**: 8:00 PM onwards
-   - **Venue**: Samarambh Lawn and Banquets, Ghodbunder Road, Opp. CNG Pump, Owale, Thane West - 400615 📍
+   - **Venue**: Ovala, Ghodbunder Road, Gowniwada, Owale, Thane West - 400607 📍
 
 4. **RSVP & Contact Numbers**:
    - `+91 97692 66286`
